@@ -1,0 +1,63 @@
+Option Explicit
+
+Sub initialLoading()
+    
+    Dim myColumn As Long
+    Dim price As Double
+    Dim priceRPL As Double
+    Dim priceRPS As Double
+    Dim priceRPKO As Double
+    Dim myDate As Date
+    Dim i As Integer
+    Dim a As Long
+    Dim month_name As String
+    Dim WS_Count As Integer
+        
+    ' WS_Count sets the counter of sheets in the book
+    WS_Count = ThisWorkbook.Worksheets.Count
+    
+    'counter for Range
+    i = 2 
+    
+    For a = 1 To WS_Count
+    
+        
+        month_name = ThisWorkbook.Worksheets(a).Name
+        
+        
+        myColumn = ThisWorkbook.Worksheets(month_name).Cells(1, Columns.Count).End(xlToLeft).Column
+                   
+            Do
+                
+                myDate = ThisWorkbook.Worksheets(month_name).Cells(1, myColumn)
+                
+                
+                price = ThisWorkbook.Worksheets(month_name).Cells(1, myColumn).Offset(4, 0)
+                priceRPL = ThisWorkbook.Worksheets(month_name).Cells(1, myColumn).Offset(14, 0)
+                priceRPS = ThisWorkbook.Worksheets(month_name).Cells(1, myColumn).Offset(23, 0)
+                priceRPKO = ThisWorkbook.Worksheets(month_name).Cells(1, myColumn).Offset(29, 0)
+                
+                With Workbooks("Reuters").Worksheets("Total")
+                                
+                
+                .Range("a" & i) = myDate
+                
+                
+                .Range("b" & i) = price
+                .Range("c" & i) = priceRPL
+                .Range("d" & i) = priceRPS
+                .Range("e" & i) = priceRPKO
+                
+                End With
+                        
+                i = i + 1
+                
+                
+                myColumn = myColumn - 4
+        
+            Loop Until myColumn = 2
+    
+    Next a
+
+End Sub
+
